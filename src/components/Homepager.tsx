@@ -3,16 +3,19 @@ import VideoSection from './VideoSection';
 import FormSection from './FormSection';
 import TransformationsSection from './TransformationsSection';
 import ContactSection from './ContactSection';
+import Header from './header';
+
+
 
 const HomePage: React.FC = () => {
+  
+
   return (
     <div className="home-page">
-      <header className="header">
-        <h1>Welcome to [Nutritionist Name]</h1>
-      </header>
+      <Header/>
       <VideoSection />
-      <FormSection />
       <TransformationsSection />
+      <FormSection />
       <ContactSection />
     </div>
   );

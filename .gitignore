@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+.env
+PORT=3000
+ACCESS_TOKEN=YOUR_ACCESS_TOKEN
+

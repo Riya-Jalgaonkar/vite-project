@@ -2,12 +2,17 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React + TS</title>
+    <link rel="stylesheet" href="./src/styles/background.css">
   </head>
   <body>
-    <div id="root"></div>
+    <div class="container">
+      <video autoplay muted loop class="background-clip">
+        <source src="./src/assets/images/background.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+      <div class="content" id="root"></div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
