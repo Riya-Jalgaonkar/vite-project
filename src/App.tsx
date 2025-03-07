@@ -1,19 +1,17 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Homepager from './components/Homepager';
-import './App.css'
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Header from "./components/header";
+import HomePage from "./components/Homepager";
 
-
-const App: React.FC = () => {
+function App() {
   return (
     <Router>
-      <div>
-        <Routes>
-          <Route path="/" element={<Homepager/>} />
-        </Routes>
-      </div>
+      <Header />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+      </Routes>
     </Router>
   );
-};
+}
 
 export default App;

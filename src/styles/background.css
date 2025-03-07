@@ -11,6 +11,9 @@ body, html {
 .container {
   position: relative;
   min-height: 100vh; /* Ensure the container takes at least the full viewport height */
+  background-color: #432985;
+background-image: url("https://www.transparenttextures.com/patterns/black-orchid.png");
+/* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
 }
 
 .background-clip {

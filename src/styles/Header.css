@@ -1,0 +1,128 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;500&display=swap');
+
+/* Header Styles */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 1rem 2rem;
+}
+
+.logo-container {
+  flex-grow: 1; /* Takes available space */
+  display: flex;
+  justify-content: center; /* Centers logo */
+  align-items: center;
+}
+
+
+/* Logo Styling */
+.logo {
+  font-size: 2rem; /* Large for impact */
+  font-weight: 600;
+  font-family: 'Playfair Display', serif;
+  color:#f3f3f3; /* Gold */
+  margin: 0;
+  letter-spacing: 1px;
+  justify-content: center;
+}
+
+/* Site Name (Fit Bharat Mission) */
+.site-name {
+  font-size: 1rem;
+  font-family: 'Inter', sans-serif;
+  color: #f3f3f3; /* Light Gray */
+  margin-left: 1rem;
+  opacity: 0.9;
+}
+
+/* Navigation Links */
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.nav-link {
+  text-decoration: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 1.1rem;
+  color: white;
+  font-weight: 500;
+  padding: 0.5rem 0;
+  position: relative;
+  transition: color 0.3s;
+}
+
+.nav-link:hover {
+  color: #FFD700; /* Gold on hover */
+}
+
+.nav-link.active {
+  color: #FFD700;
+  font-weight: 700;
+}
+
+.nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #FFD700;
+}
+
+/* Responsive Design for iPhones */
+@media (max-width: 768px) {
+  .header {
+    padding: 0.75rem 1rem;
+  }
+
+  .logo {
+    font-size: 1.75rem;
+  }
+
+  .site-name {
+    font-size: 0.9rem;
+  }
+
+  .nav-links {
+    gap: 1rem;
+  }
+
+  .nav-link {
+    font-size: 1rem;
+  }
+}
+
+/* iPhone-Specific Optimization */
+@media (max-width: 480px) {
+  .header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .logo {
+    font-size: 1.5rem;
+  }
+
+  .site-name {
+    font-size: 0.8rem;
+    margin: 0;
+  }
+
+  .nav-links {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  .nav-link {
+    font-size: 0.9rem;
+    padding: 0.3rem 0;
+  }
+}

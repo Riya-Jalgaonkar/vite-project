@@ -1,9 +1,11 @@
 import React from 'react';
 import '../styles/contact.css'; // Import the CSS file
+import './header.tsx'; // Import the header file
 
 const ContactSection: React.FC = () => {
   return (
-    <section className="contact-section">
+    // Remove the nested section and use a single section with id
+    <section id="contact" className="contact-section">
       <h2>Contact Us</h2>
       <p>Email: <a href="mailto:contact@nutritionist.com">contact@nutritionist.com</a></p>
       <p>Phone: <a href="tel:+1234567890">+1234567890</a></p>

@@ -5,6 +5,8 @@ import TransformationCard from "./TransformationCard";
 import img1 from '../assets/images/1.jpg';
 import img2 from '../assets/images/2.jpg';
 import img3 from '../assets/images/3.jpg';
+import './header.tsx';
+import '../styles/Carousel.css';
 
 const responsive = {
   superLargeDesktop: {
@@ -27,37 +29,40 @@ const responsive = {
 
 const TransformationSection: React.FC = () => {
   return (
-    <Carousel
-    responsive={responsive} 
-    infinite={true} 
-    autoPlay={true} 
-    autoPlaySpeed={5000} // Slide change every 3 seconds 
-    customTransition="transform 300ms ease-in-out" 
-    transitionDuration={500}
-     
-    >
-     <div>
-      <TransformationCard
-        image= {img1} // Replace with your actual image path
-        name="Hinal Patel"
-        message="Best experience ever, My life is all set thanks to Mohini Ben"
-      />
-    </div>
-    <div>
-      <TransformationCard
-        image= {img2} // Replace with your actual image path
-        name="Hinal Patel"
-        message="Best experience ever, My life is all set thanks to Mohini Ben"
-      />
-    </div>
-    <div>
-      <TransformationCard
-        image= {img3} // Replace with your actual image path
-        name="Hinal Patel"
-        message="Best experience ever, My life is all set thanks to Mohini Ben"
-      />
-    </div>
-    </Carousel>
+    // Add the id to this section
+    <section id="customers" className="transformations-section">
+      <h2 className = "whiteit">Customer Transformations</h2>
+      <Carousel
+        responsive={responsive}
+        infinite={true}
+        autoPlay={true}
+        autoPlaySpeed={5000} // Slide change every 5 seconds
+        customTransition="transform 300ms ease-in-out"
+        transitionDuration={500}
+      >
+        <div>
+          <TransformationCard
+            image={img1} // Replace with your actual image path
+            name="Hinal Patel"
+            message="Best experience ever, My life is all set thanks to Mohini Ben"
+          />
+        </div>
+        <div>
+          <TransformationCard
+            image={img2} // Replace with your actual image path
+            name="Hinal Patel"
+            message="Best experience ever, My life is all set thanks to Mohini Ben"
+          />
+        </div>
+        <div>
+          <TransformationCard
+            image={img3} // Replace with your actual image path
+            name="Hinal Patel"
+            message="Best experience ever, My life is all set thanks to Mohini Ben"
+          />
+        </div>
+      </Carousel>
+    </section>
   );
 };
 

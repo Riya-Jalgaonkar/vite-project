@@ -1,0 +1,44 @@
+.box{
+    height: 30px;
+    background-color: #B3D8A8; /* Color the box blue */
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid black;
+}
+
+.icons{
+    margin-left: 10px
+}
+
+.details{
+    height: 500px;
+    background-color: #FCE7C8;
+    padding: 10px 10px 10px 10px;
+    box-shadow: 5px 5px 5px 2px rgba(0, 0, 0, 0.5);
+}
+
+.moushi {
+    overflow: hidden; /* Ensure the image doesn't show outside its container */
+    width: 100%; /* Ensure the container takes full width of the mobile screen */
+  }
+  
+  .animated {
+    position: absolute; /* Position relative to its container */
+    right: -100%; /* Start position: hidden on the right */
+    animation: slideIn 2s ease-in-out forwards; /* Apply animation */
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  
+  @keyframes slideIn {
+    from {
+      right: -100%; /* Start off-screen */
+    }
+    to {
+      right: calc(50% - 20px); /* End position: near the center but 20px away */
+    }
+  }
+  

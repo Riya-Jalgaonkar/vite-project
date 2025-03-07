@@ -3,6 +3,7 @@ import '../styles/FormSection.css'; // Assume you have a CSS file for styling
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
 import axios from "axios"; 
+import './header.tsx'
 
 const FormSection: React.FC = () => {
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', whatsapp: false });
@@ -77,6 +78,7 @@ const FormSection: React.FC = () => {
 
   return (
     <section className="form-section">
+      <section id="joinus">
       <h2 className="form-title">Sign Up for Updates</h2>
       <form onSubmit={handleSubmit} className="form-container">
         <input
@@ -123,6 +125,7 @@ const FormSection: React.FC = () => {
         </button>
       </form>
       {message && <p className="form-message">{message}</p>}
+      </section>
     </section>
   );
 };
