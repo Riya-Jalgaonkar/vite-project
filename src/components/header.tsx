@@ -6,7 +6,7 @@ interface HeaderProps {
   className?: string;
 }
 
-const Header: React.FC<HeaderProps> = ({ className }) => {
+const Header: React.FC<HeaderProps> = () => {
   return (
     <header className= "header">
       <h1 className="logo">Mohini Khatavkar</h1>

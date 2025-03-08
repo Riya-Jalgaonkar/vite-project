@@ -77,8 +77,8 @@ const FormSection: React.FC = () => {
   };
 
   return (
+    <section id="joinus">
     <section className="form-section">
-      <section id="joinus">
       <h2 className="form-title">Sign Up for Updates</h2>
       <form onSubmit={handleSubmit} className="form-container">
         <input
