@@ -1,6 +1,6 @@
 import React from "react";
 import { HashLink as Link } from "react-router-hash-link";
-import "../styles/header.css";
+import "../styles/Header.css";
 
 interface HeaderProps {
   className?: string;
