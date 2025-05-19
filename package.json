@@ -11,7 +11,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "axios": "^1.7.9",
+    "axios": "^1.9.0",
     "body-parser": "^1.20.3",
     "bootstrap": "^5.3.3",
     "cors": "^2.8.5",
@@ -23,6 +23,7 @@
     "react-feather": "^2.0.10",
     "react-helmet": "^6.1.0",
     "react-multi-carousel": "^2.8.5",
+    "react-router": "^7.6.0",
     "react-router-dom": "^7.3.0",
     "react-router-hash-link": "^2.4.3"
   },
