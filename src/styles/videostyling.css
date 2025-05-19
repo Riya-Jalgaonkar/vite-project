@@ -169,3 +169,121 @@ background-color: rgba(253, 175, 123, 0.3);
       font-size: 0.8em; /* Adjust font size */
      }
     }
+    /* Membership CTA Section - Adjusted to formsection style but consistent with cards */
+
+.membership-cta {
+  background-color: rgba(253, 175, 123, 0.3) !important; /* same translucent orange */
+  border: 2px solid #fff !important;          /* white border as in formsection */
+  border-radius: 20px;                         /* larger radius matching formsection */
+  padding: 2rem;
+  margin: 20px auto;
+  max-width: 800px;
+  text-align: center;
+  color: #FEFAE0;                             /* pale creamy white from formsection*/
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);  /* softer shadow like formsection */
+  font-family: 'Arial', sans-serif;            /* consistent font */
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.membership-cta:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.membership-cta h3 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: #FEFAE0;                              /* same pale white */
+}
+
+.membership-cta p {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  font-family: 'Georgia', serif;
+  font-style: italic;
+  color: #FEFAE0;
+}
+
+.membership-cta ul {
+  list-style-type: disc;
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+  text-align: left;
+  color: #FEFAE0;
+  font-family: 'Georgia', serif;
+}
+
+.membership-cta li {
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+.membership-cta .price {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  color: #FEFAE0;
+  font-family: 'Arial', sans-serif;
+}
+
+.membership-cta button {
+  background-color: #10B981; /* vibrant green from formsection */
+  color: white;
+  padding: 12px 24px;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-family: 'Arial', sans-serif;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+}
+
+.membership-cta button:hover {
+  background-color: #0e9e6e;
+  box-shadow: 0 6px 14px rgba(14, 158, 110, 0.6);
+}
+
+/* Responsive for Tablets */
+@media (max-width: 768px) {
+  .membership-cta {
+    padding: 1.5rem;
+    margin: 16px;
+  }
+
+  .membership-cta h3 {
+    font-size: 1.75rem;
+  }
+
+  .membership-cta p,
+  .membership-cta li {
+    font-size: 1rem;
+  }
+
+  .membership-cta .price {
+    font-size: 1.3rem;
+  }
+}
+
+/* Responsive for Phones */
+@media (max-width: 480px) {
+  .membership-cta {
+    padding: 1rem;
+    margin: 10px;
+  }
+
+  .membership-cta h3 {
+    font-size: 1.5rem;
+  }
+
+  .membership-cta p,
+  .membership-cta li {
+    font-size: 0.95rem;
+  }
+
+  .membership-cta button {
+    font-size: 1rem;
+    padding: 10px 20px;
+  }
+}
