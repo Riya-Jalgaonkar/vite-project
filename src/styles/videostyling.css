@@ -171,22 +171,22 @@ background-color: rgba(253, 175, 123, 0.3);
     }
     /* Membership CTA Section - Adjusted to formsection style but consistent with cards */
 
+/* Membership CTA Section */
 .membership-cta {
-  background-color: rgba(253, 175, 123, 0.3) !important; /* same translucent orange */
-  border: 2px solid #fff !important;          /* white border as in formsection */
-  border-radius: 20px;                         /* larger radius matching formsection */
+  background-color: rgba(253, 175, 123, 0.3);
+  border: 2px solid #fff !important;
+  border-radius: 15px !important;
   padding: 2rem;
   margin: 20px auto;
   max-width: 800px;
   text-align: center;
-  color: #FEFAE0;                             /* pale creamy white from formsection*/
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);  /* softer shadow like formsection */
-  font-family: 'Arial', sans-serif;            /* consistent font */
+  color: #FEFAE0;
+  box-shadow: 0 4px 8px #0000001a;
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .membership-cta:hover {
-  transform: translateY(-10px);
+  transform: translateY(-5px);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
@@ -194,7 +194,7 @@ background-color: rgba(253, 175, 123, 0.3);
   font-size: 2rem;
   font-weight: bold;
   margin-bottom: 1rem;
-  color: #FEFAE0;                              /* same pale white */
+  font-family: 'Arial', sans-serif;
 }
 
 .membership-cta p {
@@ -202,7 +202,6 @@ background-color: rgba(253, 175, 123, 0.3);
   margin-bottom: 1rem;
   font-family: 'Georgia', serif;
   font-style: italic;
-  color: #FEFAE0;
 }
 
 .membership-cta ul {
@@ -210,8 +209,7 @@ background-color: rgba(253, 175, 123, 0.3);
   margin-bottom: 1rem;
   padding-left: 1.5rem;
   text-align: left;
-  color: #FEFAE0;
-  font-family: 'Georgia', serif;
+  color: #fff;
 }
 
 .membership-cta li {
@@ -219,33 +217,65 @@ background-color: rgba(253, 175, 123, 0.3);
   font-size: 1rem;
 }
 
-.membership-cta .price {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 1.5rem;
-  color: #FEFAE0;
-  font-family: 'Arial', sans-serif;
+.membership-cta .text-xl {
+  color: #fff;
+}
+
+.membership-cta form {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 1rem;
+  border-radius: 10px;
+  margin-top: 1rem;
+  color: #fff;
+}
+
+.membership-cta label {
+  color: #fff;
+  text-align: left;
+  display: block;
+  margin-bottom: 0.25rem;
+  font-weight: 500;
+}
+
+.membership-cta input,
+.membership-cta textarea {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: #fff;
+  color: #333;
+  font-size: 1rem;
+}
+
+.membership-cta input:focus,
+.membership-cta textarea:focus {
+  outline: none;
+  border-color: #10B981;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
 }
 
 .membership-cta button {
-  background-color: #10B981; /* vibrant green from formsection */
+  background-color: #10B981;
   color: white;
-  padding: 12px 24px;
-  font-size: 1.1rem;
+  padding: 10px 20px;
+  font-size: 1rem;
   border: none;
-  border-radius: 10px;
+  border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  font-family: 'Arial', sans-serif;
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
 }
 
 .membership-cta button:hover {
   background-color: #0e9e6e;
-  box-shadow: 0 6px 14px rgba(14, 158, 110, 0.6);
 }
 
-/* Responsive for Tablets */
+.membership-cta .bg-gray-100 {
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+/* Responsive Adjustments */
 @media (max-width: 768px) {
   .membership-cta {
     padding: 1.5rem;
@@ -260,13 +290,8 @@ background-color: rgba(253, 175, 123, 0.3);
   .membership-cta li {
     font-size: 1rem;
   }
-
-  .membership-cta .price {
-    font-size: 1.3rem;
-  }
 }
 
-/* Responsive for Phones */
 @media (max-width: 480px) {
   .membership-cta {
     padding: 1rem;
@@ -277,13 +302,22 @@ background-color: rgba(253, 175, 123, 0.3);
     font-size: 1.5rem;
   }
 
-  .membership-cta p,
-  .membership-cta li {
-    font-size: 0.95rem;
-  }
-
   .membership-cta button {
-    font-size: 1rem;
-    padding: 10px 20px;
+    font-size: 0.95rem;
+    padding: 8px 16px;
+  }
+}
+.membership-cta form {
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
