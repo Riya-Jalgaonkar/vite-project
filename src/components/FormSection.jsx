@@ -65,73 +65,79 @@ export default function FormSection() {
   };
 
   return (
-    <section id="joinus" className="py-20 bg-gradient-to-b from-green-50 to-white text-center">
-      <div className="max-w-xl mx-auto bg-white/80 backdrop-blur-lg p-10 rounded-3xl shadow-xl border border-green-100">
-        <h2 className="text-3xl font-extrabold text-green-700 mb-6">Join Our Wellness Tribe</h2>
-        <p className="text-gray-600 mb-8">Stay in the loop for weekly health tips, updates & more!</p>
+    <section id="joinus" className="py-20 px-4 bg-gradient-to-b from-[#56DFCF] via-[#ADEED9] to-[#FFEDF3] text-center">
 
-        <form onSubmit={handleSubmit} className="space-y-5 text-left">
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1">Name</label>
-            <input
-              type="text"
-              name="name"
-              placeholder="Your Name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
-            />
-          </div>
+  <div className="max-w-xl mx-auto bg-white/90 backdrop-blur-lg p-10 rounded-3xl shadow-2xl border-4 border-[#0ABAB5]">
+    <h2 className="text-4xl font-extrabold text-[#0ABAB5] mb-4 tracking-tight">
+      Join Our Wellness Tribe
+    </h2>
+    <p className="text-gray-700 mb-8 leading-relaxed">
+      Sign up to receive soulful health tips, exclusive community invites, and personal guidance — all tailored for your vibrant journey 🌿
+    </p>
 
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1">Gmail</label>
-            <input
-              type="email"
-              name="email"
-              placeholder="yourname@gmail.com"
-              value={formData.email}
-              onChange={handleChange}
-              required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1">Phone</label>
-            <input
-              type="tel"
-              name="phone"
-              placeholder="+911234567890"
-              value={formData.phone}
-              onChange={handleChange}
-              required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
-            />
-          </div>
-
-          <div className="flex items-center">
-            <input
-              type="checkbox"
-              name="whatsapp"
-              checked={formData.whatsapp}
-              onChange={handleChange}
-              className="h-4 w-4 text-green-600 border-gray-300 rounded"
-            />
-            <label className="ml-2 text-sm text-gray-700">Send updates on WhatsApp</label>
-          </div>
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition duration-200 ease-in-out"
-          >
-            {loading ? 'Submitting...' : 'Join Now'}
-          </button>
-        </form>
-
-        {message && <p className="mt-4 text-sm text-green-600 font-medium">{message}</p>}
+    <form onSubmit={handleSubmit} className="space-y-6 text-left">
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+        <input
+          type="text"
+          name="name"
+          placeholder="e.g. Aditi Sharma"
+          value={formData.name}
+          onChange={handleChange}
+          required
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0ABAB5]"
+        />
       </div>
-    </section>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">Gmail Address</label>
+        <input
+          type="email"
+          name="email"
+          placeholder="you@gmail.com"
+          value={formData.email}
+          onChange={handleChange}
+          required
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0ABAB5]"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">Phone (with +91)</label>
+        <input
+          type="tel"
+          name="phone"
+          placeholder="+91 9876543210"
+          value={formData.phone}
+          onChange={handleChange}
+          required
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0ABAB5]"
+        />
+      </div>
+
+      <div className="flex items-center">
+        <input
+          type="checkbox"
+          name="whatsapp"
+          checked={formData.whatsapp}
+          onChange={handleChange}
+          className="h-4 w-4 text-[#0ABAB5] border-gray-300 rounded"
+        />
+        <label className="ml-2 text-sm text-gray-700">Send updates on WhatsApp</label>
+      </div>
+
+      <button
+        type="submit"
+        disabled={loading}
+        className="w-full bg-[#0ABAB5] hover:bg-[#089e99] text-white font-semibold py-3 rounded-xl shadow-lg transition-transform transform hover:scale-[1.02]"
+      >
+        {loading ? 'Submitting...' : '🌟 Join Now – Let’s Begin!'}
+      </button>
+    </form>
+
+    {message && <p className="mt-6 text-sm text-[#0ABAB5] font-medium">{message}</p>}
+  </div>
+</section>
+
   );
 }

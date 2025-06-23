@@ -4,13 +4,16 @@ import FormSection from './FormSection';
 import TransformationsSection from './TransformationsSection';
 import ContactSection from './ContactSection';
 import Header from './header';
+import ctaSection from './JoinCommunitySection ';
+import JoinCommunitySection from './JoinCommunitySection ';
 
 export default function HomePage() {
   return (
-    <div className="pt-24">
+    <div className="bg-[#ADEED9] min-h-screen">
     <main className="flex flex-col w-full">
       <Header/>
       <VideoSection />
+      <JoinCommunitySection/>
       <TransformationsSection />
       <FormSection />
       <ContactSection />
