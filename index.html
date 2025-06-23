@@ -3,17 +3,33 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./src/styles/background.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Razorpay Checkout -->
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+    <!-- Optional: Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>Fit Bharat Mission</title>
   </head>
-  <body>
-    <div class="container">
-      <!-- <video autoplay muted loop class="background-clip">
-        <source src="./src/assets/images/background.mp4" type="video/mp4">
+
+  <body class="m-0 p-0 overflow-x-hidden bg-white">
+    <!-- Background container -->
+    <div class="relative min-h-screen w-full">
+
+      <!-- Optional Video Background -->
+      <!-- 
+      <video autoplay muted loop class="absolute top-0 left-0 w-full h-full object-cover -z-10">
+        <source src="/src/assets/images/background.mp4" type="video/mp4" />
         Your browser does not support the video tag.
-      </video> -->
-      <div class="content" id="root"></div>
+      </video>
+      -->
+
+      <!-- React App Root -->
+      <div id="root"></div>
     </div>
-    <script type="module" src="/src/main.tsx"></script>
+
+    <!-- React Entry -->
+    <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
