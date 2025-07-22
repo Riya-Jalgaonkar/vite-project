@@ -2,6 +2,9 @@ import express from 'express';
 import Razorpay from 'razorpay';
 import cors from 'cors';
 import dotenv from 'dotenv';
+dotenv.config();
+console.log("KEY_ID:", process.env.RAZORPAY_KEY_ID);
+console.log("KEY_SECRET:", process.env.RAZORPAY_KEY_SECRET);
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 // import sgMail from '@sendgrid/mail';
@@ -18,8 +21,8 @@ app.use(express.json());
 
 // Initialize Razorpay
 const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID,
-  key_secret: process.env.RAZORPAY_KEY_SECRET
+  key_id: process.env.VITE_RAZORPAY_KEY_ID,
+  key_secret: process.env.VITE_RAZORPAY_KEY_SECRET
 });
 
 // Initialize SendGrid
@@ -43,8 +46,13 @@ app.post('/api/create-order', async (req, res) => {
 
     console.log('Order options:', options);
     const order = await razorpay.orders.create(options);
-    console.log('Order created successfully:', order);
-    res.json(order);
+    if (!order || !order.id) {
+  console.error("Invalid order response from Razorpay:", order);
+  return res.status(500).json({ error: "Invalid order response" });
+}
+
+console.log('Order created successfully:', order);
+res.json(order);
   } catch (error) {
     console.error('Error creating order:', error);
     res.status(500).json({ 
