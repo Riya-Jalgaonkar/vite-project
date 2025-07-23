@@ -20,65 +20,50 @@ export default function FormSection() {
   const validatePhone = (phone) => /^\+91[0-9]{10}$/.test(phone);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setMessage('');
+  e.preventDefault();
+  setLoading(true);
+  setMessage('');
 
-    if (!validateEmail(formData.email)) {
-      setMessage('Please enter a valid Gmail address.');
-      setLoading(false);
-      return;
-    }
-
-    if (!validatePhone(formData.phone)) {
-      setMessage('Please enter a valid phone number with +91 followed by 10 digits.');
-      setLoading(false);
-      return;
-    }
-
-    try {
-      await addDoc(collection(db, 'signups'), formData);
-      setMessage('Thank you for signing up!');
-
-      // if (formData.whatsapp) {
-      //   try {
-      //     const response = await axios.post("http://localhost:5000/subscribe-whatsapp", {
-      //       phoneNumber: formData.phone
-      //     });
-
-      //     if (response.status === 200) {
-      //       setMessage('Thank you for signing up! WhatsApp message sent.');
-      //     } else {
-      //       setMessage('Signup successful, but WhatsApp message failed.');
-      //     }
-      //   } catch (error) {
-      //     console.error("WhatsApp API Error:", error);
-      //     setMessage('Signup successful, but WhatsApp message could not be sent.');
-      //   }
-      // }
-      
-    // 🔁 Call Razorpay after saving form
-    console.log("Triggering Razorpay...");
-  try {
-    await loadRazorpay(formData);
-    setMessage("🎉 Payment successful! Thank you.");
-  } catch (err) {
-    console.error(err);
-    setMessage("Form saved, but payment failed or was cancelled.");
+  if (!validateEmail(formData.email)) {
+    setMessage('Please enter a valid Gmail address.');
+    setLoading(false);
+    return;
   }
 
+  if (!validatePhone(formData.phone)) {
+    setMessage('Please enter a valid phone number with +91 followed by 10 digits.');
+    setLoading(false);
+    return;
+  }
 
-    // REMEMBER: Optionally verify on backend:
-    // await axios.post("/api/verify", paymentResp);
+  try {
+    await addDoc(collection(db, 'signups'), formData);
+    setMessage('Thank you for signing up!');
 
-      setFormData({ name: '', email: '', phone: '', whatsapp: false });
-    } catch (error) {
-      console.error("Error adding document: ", error);
-      setMessage('An error occurred. Please try again.');
+    const userDetails = {
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+    };
+
+    console.log("Calling loadRazorpay with userDetails:", userDetails);
+
+    try {
+      const result = await loadRazorpay(userDetails);
+      console.log("Razorpay result:", result);
+    } catch (err) {
+      console.error("Payment failed:", err);
     }
 
-    setLoading(false);
-  };
+    setFormData({ name: '', email: '', phone: '', whatsapp: false });
+  } catch (error) {
+    console.error("Error adding document: ", error);
+    setMessage('An error occurred. Please try again.');
+  }
+
+  setLoading(false);
+};
+
 
   return (
     <section id="joinus" className="py-20 px-4 bg-gradient-to-b from-[#56DFCF] via-[#ADEED9] to-[#FFEDF3] text-center">

@@ -18,7 +18,7 @@ export default async function loadRazorpay(userDetails) {
 const data = await res.json();
   return new Promise((resolve, reject) => {
     const options = {
-      key: process.env.VITE_RAZORPAY_KEY_ID,
+      key:import.meta.env.VITE_RAZORPAY_KEY_ID,
       amount: data.amount,
       currency: data.currency,
       name: "Your Brand Name",

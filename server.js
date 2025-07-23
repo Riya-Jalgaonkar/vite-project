@@ -2,18 +2,18 @@ import express from 'express';
 import Razorpay from 'razorpay';
 import cors from 'cors';
 import dotenv from 'dotenv';
-dotenv.config();
-console.log("KEY_ID:", process.env.RAZORPAY_KEY_ID);
-console.log("KEY_SECRET:", process.env.RAZORPAY_KEY_SECRET);
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 // import sgMail from '@sendgrid/mail';
 import crypto from 'crypto';
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const __dirname = dirname(__filename);  
 
 dotenv.config();
+console.log("KEY_ID:", process.env.VITE_RAZORPAY_KEY_ID);
+console.log("KEY_SECRET:", process.env.VITE_RAZORPAY_KEY_SECRET);
+
 
 const app = express();
 app.use(cors());
