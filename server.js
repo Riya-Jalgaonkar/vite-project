@@ -6,6 +6,7 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 // import sgMail from '@sendgrid/mail';
 import crypto from 'crypto';
+import { MongoClient } from 'mongodb';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);  
@@ -14,10 +15,25 @@ dotenv.config();
 console.log("KEY_ID:", process.env.VITE_RAZORPAY_KEY_ID);
 console.log("KEY_SECRET:", process.env.VITE_RAZORPAY_KEY_SECRET);
 
-
+const client = new MongoClient(process.env.MONGO_URI);
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+try {
+  await client.connect();
+  console.log("✅ Connected to MongoDB Atlas");
+
+  const db = client.db("myAppDB"); // You can change this name
+  const usersCollection = db.collection("users"); // Example collection
+
+  // Example: Insert data
+  // await usersCollection.insertOne({ name: "Riya", email: "riya@example.com" });
+
+} catch (err) {
+  console.error("❌ MongoDB connection failed:", err);
+}
+
 
 // Initialize Razorpay
 const razorpay = new Razorpay({
@@ -27,6 +43,31 @@ const razorpay = new Razorpay({
 
 // Initialize SendGrid
 // sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+// Save user endpoint
+app.post('/api/save-user', async (req, res) => {
+  try {
+    const { name, email, phone } = req.body;
+
+    if (!name || !email || !phone) {
+      return res.status(400).json({ message: 'Missing fields' });
+    }
+
+    const db = client.db("converterDB"); // replace with your DB name
+    const users = db.collection("converters");
+
+    const result = await users.insertOne({
+      name,
+      email,
+      phone,
+      createdAt: new Date()
+    });
+
+    res.json({ success: true, userId: result.insertedId });
+  } catch (err) {
+    console.error("Error saving user:", err);
+    res.status(500).json({ success: false, message: 'Failed to save user' });
+  }
+});
 
 // Create order endpoint
 app.post('/api/create-order', async (req, res) => {

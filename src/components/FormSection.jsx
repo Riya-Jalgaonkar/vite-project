@@ -39,7 +39,11 @@ export default function FormSection() {
   try {
     await addDoc(collection(db, 'signups'), formData);
     setMessage('Thank you for signing up!');
-
+    await axios.post('http://localhost:5000/api/save-user', {
+    name: formData.name,
+    email: formData.email,
+    phone: formData.phone
+  });
     const userDetails = {
       name: formData.name,
       email: formData.email,
