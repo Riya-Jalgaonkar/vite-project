@@ -1,4 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
+// import { collection, addDoc } from 'firebase/firestore';
+// import { db } from '../firebaseConfig';
+import axios from "axios";
+import React from "react";
+import { motion } from "framer-motion";
+import loadRazorpay from './payment';
+
+
 
 export default function FormSection() {
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', whatsapp: false });
@@ -34,36 +42,54 @@ export default function FormSection() {
   const validatePhone = (phone) => /^\+91[0-9]{10}$/.test(phone);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setMessage('');
+  e.preventDefault();
+  setLoading(true);
+  setMessage('');
 
-    if (!validateEmail(formData.email)) {
-      setMessage('Please enter a valid Gmail address.');
-      setLoading(false);
-      return;
-    }
+  if (!validateEmail(formData.email)) {
+    setMessage('Please enter a valid Gmail address.');
+    setLoading(false);
+    return;
+  }
 
-    if (!validatePhone(formData.phone)) {
-      setMessage('Please enter a valid phone number with +91 followed by 10 digits.');
-      setLoading(false);
-      return;
-    }
+  if (!validatePhone(formData.phone)) {
+    setMessage('Please enter a valid phone number with +91 followed by 10 digits.');
+    setLoading(false);
+    return;
+  }
+
+  try {
+    // await addDoc(collection(db, 'signups'), formData);
+    // setMessage('Thank you for signing up!');
+    await axios.post('http://localhost:5000/api/save-user', {
+    name: formData.name,
+    email: formData.email,
+    phone: formData.phone
+  });
+    const userDetails = {
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+    };
+
+    console.log("Calling loadRazorpay with userDetails:", userDetails);
 
     try {
-      // Simulate form submission - replace with your Firebase/backend logic
-      console.log('Form submitted:', formData);
-      setMessage('Thank you for signing up! We\'ll be in touch soon.');
-      
-      // Reset form
-      setFormData({ name: '', email: '', phone: '', whatsapp: false });
-    } catch (error) {
-      console.error("Error submitting form: ", error);
-      setMessage('An error occurred. Please try again.');
+      const result = await loadRazorpay(userDetails);
+      console.log("Razorpay result:", result);
+    } catch (err) {
+      console.error("Payment failed:", err);
     }
 
-    setLoading(false);
-  };
+    setFormData({ name: '', email: '', phone: '', whatsapp: false });
+  } catch (error) {
+    console.error("Error adding document: ", error);
+    setMessage('An error occurred. Please try again.');
+  }
+
+  setLoading(false);
+};
+
 
   return (
     <section 
