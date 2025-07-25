@@ -1,483 +1,410 @@
-import { useState, useEffect, useCallback } from "react";
-import React from "react";
-
-// Constants for better maintainability
-const COMMUNITY_FEATURES = [
-  {
-    icon: "👥",
-    title: "Expert Network",
-    description: "Connect with wellness professionals, certified coaches, and industry leaders",
-    gradient: "from-white/90 to-[#ADEED9]/20"
-  },
-  {
-    icon: "🎓",
-    title: "Learning Hub",
-    description: "Access exclusive workshops, masterclasses, and evidence-based wellness content",
-    gradient: "from-[#ADEED9]/20 to-[#FFEDF3]/30"
-  },
-  {
-    icon: "🏆",
-    title: "Achievement System",
-    description: "Track your progress, earn certifications, and celebrate wellness milestones",
-    gradient: "from-[#FFEDF3]/30 to-white/90"
-  },
-  {
-    icon: "💬",
-    title: "24/7 Support",
-    description: "Get guidance from our community moderators and peer support network",
-    gradient: "from-white/90 to-[#56DFCF]/20"
-  }
-];
-
-const TESTIMONIALS = [
-  {
-    name: "Dr. Sarah Chen",
-    role: "Wellness Coach",
-    content: "This community transformed my approach to holistic wellness. The network is incredible.",
-    avatar: "👩‍⚕️"
-  },
-  {
-    name: "Michael Rodriguez",
-    role: "Fitness Professional",
-    content: "Best investment I've made in my wellness journey. The support is unmatched.",
-    avatar: "👨‍💼"
-  },
-  {
-    name: "Emma Thompson",
-    role: "Nutritionist",
-    content: "The learning resources and community connection have elevated my practice significantly.",
-    avatar: "👩‍🔬"
-  }
-];
-
-const JOIN_FORM_FIELDS = [
-  { field: "fullName", label: "Full Name", placeholder: "Enter your full name", type: "text", required: true },
-  { field: "email", label: "Email Address", placeholder: "your.email@example.com", type: "email", required: true },
-  { field: "profession", label: "Profession", placeholder: "Your current profession", type: "text", required: true },
-  { field: "experience", label: "Experience Level", placeholder: "Beginner, Intermediate, Advanced", type: "select", required: true },
-  { field: "interests", label: "Wellness Interests", placeholder: "What aspects of wellness interest you most?", type: "textarea", required: false }
-];
-
-const EXPERIENCE_OPTIONS = [
-  { value: "", label: "Select your experience level" },
-  { value: "beginner", label: "Beginner - New to wellness" },
-  { value: "intermediate", label: "Intermediate - Some experience" },
-  { value: "advanced", label: "Advanced - Experienced practitioner" },
-  { value: "expert", label: "Expert - Professional in the field" }
-];
+import React, { useEffect, useRef, useState } from "react";
 
 export default function JoinCommunitySection() {
-  const [showJoinForm, setShowJoinForm] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  const [formData, setFormData] = useState({
-    fullName: "", 
-    email: "", 
-    profession: "", 
-    experience: "", 
-    interests: ""
-  });
-  const [formErrors, setFormErrors] = useState({});
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [testimonialsVisible, setTestimonialsVisible] = useState(false);
+  const [headerVisible, setHeaderVisible] = useState(false);
+  const formRef = useRef(null);
+  const testimonialsRef = useRef(null);
+  const headerRef = useRef(null);
 
-  // Check for reduced motion preference
   useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setPrefersReducedMotion(mediaQuery.matches);
-    
-    const handleChange = (e) => setPrefersReducedMotion(e.matches);
-    mediaQuery.addEventListener('change', handleChange);
-    
-    return () => mediaQuery.removeEventListener('change', handleChange);
-  }, []);
-
-  // Animate section on mount
-  useEffect(() => {
-    const timer = setTimeout(() => setIsVisible(true), 200);
-    return () => clearTimeout(timer);
-  }, []);
-
-  const handleChange = useCallback((e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-    
-    // Clear error when user starts typing
-    if (formErrors[name]) {
-      setFormErrors(prev => ({ ...prev, [name]: null }));
-    }
-  }, [formErrors]);
-
-  const validateForm = useCallback(() => {
-    const errors = {};
-    
-    JOIN_FORM_FIELDS.forEach(({ field, required }) => {
-      if (required && !formData[field].trim()) {
-        errors[field] = `${field.replace(/([A-Z])/g, ' $1').toLowerCase()} is required`;
-      }
-    });
-    
-    // Email validation
-    if (formData.email && !/\S+@\S+\.\S+/.test(formData.email)) {
-      errors.email = "Please enter a valid email address";
-    }
-    
-    return errors;
-  }, [formData]);
-
-  const handleSubmit = useCallback(async () => {
-    const errors = validateForm();
-    
-    if (Object.keys(errors).length > 0) {
-      setFormErrors(errors);
-      return;
-    }
-    
-    setShowJoinForm(false);
-    setShowSuccess(true);
-  }, [validateForm]);
-
-  const handleCloseForm = useCallback(() => {
-    setShowJoinForm(false);
-    setFormErrors({});
-  }, []);
-
-  const handleKeyPress = useCallback((e, callback) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      callback();
-    }
-  }, []);
-
-  // Optimized floating elements
-  const FloatingCommunityElements = React.memo(() => {
-    if (prefersReducedMotion) return null;
-    
-    const elements = [];
-    const communityShapes = ['🌟', '✨', '💫', '🌙', '☀️', '🌸'];
-    
-    for (let i = 0; i < 6; i++) {
-      elements.push(
-        <div
-          key={i}
-          className="absolute animate-gentle-float opacity-20 text-lg pointer-events-none"
-          style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-            animationDelay: `${Math.random() * 3}s`,
-            animationDuration: `${6 + Math.random() * 3}s`
-          }}
-          aria-hidden="true"
-        >
-          {communityShapes[Math.floor(Math.random() * communityShapes.length)]}
-        </div>
+    const createObserver = (setVisible, threshold = 0.2) => {
+      return new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) setVisible(true);
+        },
+        { threshold }
       );
+    };
+
+    const formObserver = createObserver(setIsVisible, 0.2);
+    const testimonialsObserver = createObserver(setTestimonialsVisible, 0.1);
+    const headerObserver = createObserver(setHeaderVisible, 0.3);
+
+    if (formRef.current) formObserver.observe(formRef.current);
+    if (testimonialsRef.current) testimonialsObserver.observe(testimonialsRef.current);
+    if (headerRef.current) headerObserver.observe(headerRef.current);
+    
+    return () => {
+      formObserver.disconnect();
+      testimonialsObserver.disconnect();
+      headerObserver.disconnect();
+    };
+  }, []);
+
+  const testimonials = [
+    {
+      name: "Dr. Sarah Chen",
+      role: "Clinical Nutritionist",
+      image: "👩‍⚕️",
+      quote: "Mohini's holistic approach to nutrition has transformed how I guide my patients. Her deep understanding of mind-body connection is extraordinary."
+    },
+    {
+      name: "Marcus Rodriguez",
+      role: "Wellness Coach",
+      image: "👨‍💼",
+      quote: "Working alongside Mohini has been inspiring. Her ability to create personalized wellness plans that actually work is unmatched in our field."
+    },
+    {
+      name: "Dr. Priya Sharma",
+      role: "Integrative Medicine",
+      image: "👩‍🔬",
+      quote: "Mohini combines ancient wisdom with modern science beautifully. Her clients achieve lasting transformation, not just temporary results."
     }
-    return <>{elements}</>;
+  ];
+
+  const orbFloatStyle = (delay = 0, duration = 10) => ({
+    animation: `orbFloat ${duration}s ease-in-out infinite`,
+    animationDelay: `${delay}s`
   });
+
+  const pulseStyle = (delay = 0) => ({
+    animation: `orbPulse 6s ease-in-out infinite`,
+    animationDelay: `${delay}s`
+  });
+
+  const floatStyle = (delay = 0) => ({
+    animation: `float 6s ease-in-out infinite`,
+    animationDelay: `${delay}s`
+  });
+
+  const twinkleStyle = (delay = 0) => ({
+    animation: `twinkle 3s ease-in-out infinite`,
+    animationDelay: `${delay}s`
+  });
+
+  const spinSlowStyle = {
+    animation: `spin 8s linear infinite`
+  };
+
+  const buttonGlowStyle = {
+    animation: `pulse 3s ease-in-out infinite`
+  };
 
   return (
-    <div className="relative min-h-screen overflow-hidden font-['Inter']">
-      {/* Background with organic gradients */}
-      <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#FFEDF3]/30 via-white to-[#ADEED9]/20"></div>
+    <>
+      <style>{`
+        @keyframes orbFloat {
+          0%, 100% { transform: translateY(0px) translateX(0px); }
+          25% { transform: translateY(-20px) translateX(10px); }
+          50% { transform: translateY(-10px) translateX(-15px); }
+          75% { transform: translateY(-30px) translateX(5px); }
+        }
         
-        {/* Layered organic shapes */}
-        <div className="absolute inset-0 overflow-hidden">
-          {/* Wave dividers */}
-          <svg className="absolute top-0 left-0 w-full h-16 sm:h-24 md:h-32 text-[#0ABAB5]" viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true">
-            <path d="M0,0 C300,80 900,40 1200,60 L1200,0 Z" fill="currentColor" opacity="0.1"></path>
-          </svg>
-          
-          <svg className="absolute bottom-0 left-0 w-full h-16 sm:h-24 md:h-32 text-[#56DFCF]" viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true">
-            <path d="M0,120 C300,40 900,80 1200,60 L1200,120 Z" fill="currentColor" opacity="0.15"></path>
-          </svg>
-          
-          {/* Organic blob shapes */}
-          <div className="absolute top-8 right-8 w-32 sm:w-48 md:w-64 h-32 sm:h-48 md:h-64 bg-gradient-to-br from-[#0ABAB5]/6 to-[#56DFCF]/4 rounded-full opacity-40 blur-2xl animate-gentle-pulse" aria-hidden="true"></div>
-          <div className="absolute bottom-20 left-8 w-40 sm:w-60 md:w-80 h-40 sm:h-60 md:h-80 bg-gradient-to-br from-[#FFEDF3]/12 to-[#ADEED9]/8 rounded-full opacity-30 blur-xl animate-gentle-pulse" style={{ animationDelay: '1.5s' }} aria-hidden="true"></div>
-        </div>
-      </div>
+        @keyframes orbPulse {
+          0%, 100% { opacity: 0.3; transform: scale(1); }
+          50% { opacity: 0.6; transform: scale(1.1); }
+        }
+        
+        @keyframes twinkle {
+          0%, 100% { opacity: 0.3; transform: scale(1); }
+          50% { opacity: 1; transform: scale(1.2); }
+        }
+        
+        @keyframes float {
+          0%, 100% { transform: translateY(0px) rotate(0deg); }
+          50% { transform: translateY(-20px) rotate(180deg); }
+        }
 
-      {/* Floating elements */}
-      <div className="absolute inset-0 pointer-events-none">
-        <FloatingCommunityElements />
-      </div>
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
 
-      {/* Success celebration overlay */}
-      {showSuccess && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/20 backdrop-blur-sm">
-          <div className="bg-white/98 backdrop-blur-md rounded-2xl p-6 sm:p-8 shadow-2xl border border-[#0ABAB5] animate-scale-in max-w-sm mx-auto">
-            <div className="text-center relative z-10">
-              <div className="text-4xl sm:text-5xl mb-4" role="img" aria-label="Welcome">🎉</div>
-              <h3 className="text-xl sm:text-2xl font-semibold text-[#0ABAB5] mb-2">Welcome to the Community!</h3>
-              <p className="text-gray-700 mb-4">Check your email for next steps...</p>
-              <div className="flex justify-center">
-                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-[#0ABAB5]" role="status" aria-label="Loading"></div>
-              </div>
+        @keyframes pulse {
+            0%, 100% { opacity: 0.2; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(1.05); }
+        }
+
+        .button-glow {
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        .gradient-bg {
+            background-image: linear-gradient(to right, #456882, #D2C1B6);
+        }
+
+        .pulse-orb {
+            animation: orbPulse 6s ease-in-out infinite;
+        }
+
+        .glass-morphism {
+            background: rgba(249, 243, 239, 0.08);
+            backdrop-filter: blur(20px);
+        }
+
+        /* New styles for curved 3D dropdowns */
+        .curved-dropdown {
+          border-radius: 9999px; /* This makes it fully rounded/pill-shaped */
+          padding: 0.75rem 1.25rem; /* Adjusted padding for better look with curved edges */
+          appearance: none; /* Remove default system dropdown arrow */
+          background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'%3e%3cpath d='M7 7l3-3 3 3m0 6l-3 3-3-3' stroke='%23D2C1B6' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3e%3c/svg%3e"); /* Custom SVG for dropdown arrow */
+          background-repeat: no-repeat;
+          background-position: right 0.75rem center;
+          background-size: 1em; /* Adjust size of custom arrow */
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08); /* Initial subtle shadow */
+          transition: all 0.3s ease-in-out; /* Smooth transition for all changes */
+        }
+
+        .curved-dropdown:focus {
+          box-shadow: 0 0 0 3px rgba(210, 193, 182, 0.5), 0 8px 15px rgba(0, 0, 0, 0.2); /* Enhanced shadow on focus for 3D pop */
+          transform: translateY(-1px); /* Slight lift on focus */
+          border-color: #D2C1B6; /* Highlight border on focus */
+        }
+
+        .curved-dropdown option {
+          border-radius: 0; /* Options themselves don't support border-radius directly */
+          background-color: #1B3C53; /* Ensure consistent background for options */
+          color: #F9F3EF; /* Ensure consistent text color for options */
+        }
+      `}</style>
+
+      <section
+        id="join-community"
+        className="relative bg-gradient-to-b from-[#1B3C53] to-[#172A3A] text-white overflow-hidden py-24 px-6 md:px-20 lg:px-32"
+      >
+        {/* Enhanced Floating Orbs with Color Palette */}
+        <div className="absolute inset-0 -z-10">
+          <div 
+            className="absolute w-20 h-20 bg-gradient-to-r from-[#456882] to-[#D2C1B6] rounded-full blur-2xl opacity-40 top-16 left-8" 
+            style={orbFloatStyle(0, 10)}
+          />
+          <div 
+            className="absolute w-16 h-16 bg-gradient-to-r from-[#D2C1B6] to-[#F9F3EF] rounded-full blur-xl opacity-30 top-32 right-20" 
+            style={orbFloatStyle(2, 12)}
+          />
+          <div 
+            className="absolute w-12 h-12 bg-gradient-to-r from-[#F9F3EF] to-[#D2C1B6] rounded-full blur-2xl opacity-35 bottom-40 left-16" 
+            style={orbFloatStyle(4, 8)}
+          />
+          <div 
+            className="absolute w-24 h-24 bg-gradient-to-r from-[#456882] to-[#D2C1B6] rounded-full blur-3xl opacity-25 bottom-20 right-12" 
+            style={orbFloatStyle(1, 14)}
+          />
+          <div 
+            className="absolute w-14 h-14 bg-gradient-to-r from-[#D2C1B6] to-[#456882] rounded-full blur-xl opacity-40 top-1/2 left-1/3" 
+            style={orbFloatStyle(3, 11)}
+          />
+          <div 
+            className="absolute w-10 h-10 bg-gradient-to-r from-[#F9F3EF] to-[#456882] rounded-full blur-2xl opacity-30 top-3/4 right-1/3" 
+            style={orbFloatStyle(0, 10)}
+          />
+
+          {/* Additional floating chakra elements */}
+          {[...Array(15)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute opacity-30"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                ...floatStyle(Math.random() * 6)
+              }}
+            >
+              {i % 4 === 0 ? (
+                <div className="w-3 h-6 bg-[#D2C1B6] rounded-full transform rotate-45 relative">
+                  <div className="absolute -top-1 -left-1 w-2 h-4 bg-[#456882] rounded-full opacity-60"></div>
+                </div>
+              ) : i % 4 === 1 ? (
+                <div className="w-2 h-2 bg-[#F9F3EF] rounded-full" style={twinkleStyle(i)}></div>
+              ) : i % 4 === 2 ? (
+                <div className="w-4 h-4 border-2 border-[#D2C1B6] rounded-full" style={spinSlowStyle}></div>
+              ) : (
+                <div className="w-3 h-3 bg-gradient-to-br from-[#456882] to-[#D2C1B6] rounded-full shadow-lg"></div>
+              )}
             </div>
-          </div>
+          ))}
         </div>
-      )}
 
-      {/* Main Content */}
-      <div className="relative z-10 min-h-screen flex flex-col justify-center px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20">
-        <div className="max-w-6xl mx-auto w-full">
-          
-          {/* Header Section */}
-          <div className={`text-center mb-12 sm:mb-16 transition-all duration-1000 ${showJoinForm ? 'opacity-30 blur-sm scale-95' : 'opacity-100 blur-none scale-100'} ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[#0ABAB5] mb-4 sm:mb-6 leading-tight">
-              Join Our
-              <span className="block bg-gradient-to-r from-[#0ABAB5] via-[#56DFCF] to-[#0ABAB5] bg-clip-text text-transparent">
-                Wellness Community
-              </span>
-            </h2>
-            
-            {/* Organic divider */}
-            <div className="flex justify-center mb-6 sm:mb-8">
-              <svg width="120" height="20" viewBox="0 0 120 20" className="text-[#0ABAB5]/40 w-24 sm:w-32 md:w-36" aria-hidden="true">
-                <path d="M0,10 Q30,0 60,10 T120,10" stroke="currentColor" strokeWidth="2" fill="none"></path>
-                <circle cx="60" cy="10" r="2" fill="currentColor"></circle>
-              </svg>
-            </div>
-            
-            <p className="text-base sm:text-lg md:text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed mb-8 sm:mb-12">
-              Connect with like-minded professionals, access exclusive resources, and accelerate your wellness journey through 
-              <span className="text-[#0ABAB5] font-semibold"> collaborative learning</span> and peer support.
-            </p>
-          </div>
+        {/* Text Block with Scroll Animation */}
+        <div 
+          ref={headerRef}
+          className={`max-w-4xl mx-auto text-center mb-16 transition-all duration-1000 ease-out ${
+            headerVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          }`}
+        >
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-snug mb-6 text-[#F9F3EF]">
+            Become a Part of the Holistic Wellness Tribe
+          </h2>
+          <p className="text-base sm:text-lg text-[#D2C1B6] max-w-2xl mx-auto">
+            Get exclusive tips, personalized insights, and member-only guidance directly from Mohini. Your transformation journey deserves this support.
+          </p>
+        </div>
 
-          {/* Community Features Grid */}
-          <div className={`grid sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-12 sm:mb-16 transition-all duration-1000 delay-200 ${showJoinForm ? 'opacity-30 blur-sm scale-95' : 'opacity-100 blur-none scale-100'} ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
-            {COMMUNITY_FEATURES.map((feature, index) => (
-              <div key={index} className="group">
-                <div className={`bg-gradient-to-br ${feature.gradient} backdrop-blur-sm p-6 sm:p-8 rounded-2xl border border-[#0ABAB5]/10 shadow-lg hover:shadow-xl transition-all duration-500 hover:scale-105 h-full`}>
-                  <div className="text-3xl sm:text-4xl mb-4" role="img" aria-label={feature.title}>{feature.icon}</div>
-                  <h3 className="text-lg sm:text-xl font-semibold text-[#0ABAB5] mb-3">{feature.title}</h3>
-                  <p className="text-gray-700 leading-relaxed text-sm sm:text-base">{feature.description}</p>
+        {/* Enhanced Testimonials Section - Above Form */}
+        <div
+          ref={testimonialsRef}
+          className={`mb-16 max-w-6xl mx-auto transition-all duration-1000 ease-out ${
+            testimonialsVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
+          }`}
+        >
+          <h3 className="text-2xl sm:text-3xl font-semibold mb-12 text-center text-[#F9F3EF]">What Healthcare Professionals Say</h3>
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {testimonials.map((testimonial, i) => (
+              <div
+                key={i}
+                className={`relative group transform transition-all duration-700 hover:-translate-y-2 hover:scale-105 ${
+                  testimonialsVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+                }`}
+                style={{ transitionDelay: `${i * 200}ms` }}
+              >
+                {/* Floating orbs around testimonial card */}
+                <div 
+                  className="absolute -top-6 -right-6 w-12 h-12 bg-gradient-to-br from-[#456882] to-[#D2C1B6] rounded-full shadow-lg" 
+                  style={floatStyle(1)}
+                />
+                <div 
+                  className="absolute -bottom-4 -left-4 w-8 h-8 bg-[#D2C1B6] rounded-full shadow-lg" 
+                  style={floatStyle(2)}
+                />
+                <div 
+                  className="absolute top-1/4 -left-8 w-6 h-6 bg-[#F9F3EF] rounded-full shadow-lg" 
+                  style={pulseStyle(0)}
+                />
+                <div 
+                  className="absolute bottom-1/4 -right-8 w-10 h-10 border-2 border-[#D2C1B6] rounded-full" 
+                  style={spinSlowStyle}
+                />
+                
+                {/* Glow effect */}
+                <div 
+                  className="absolute inset-0 bg-gradient-to-r from-[#456882] to-[#D2C1B6] rounded-2xl opacity-20 blur-xl" 
+                  style={pulseStyle(0)}
+                />
+
+                {/* 3D Card Effect */}
+                <div className="absolute inset-0 bg-gradient-to-br from-[#F9F3EF] to-[#D2C1B6] rounded-2xl transform rotate-1 group-hover:rotate-2 transition-transform shadow-2xl" />
+                <div className="relative bg-gradient-to-br from-[#F9F3EF] to-[#F1E8E0] text-[#1B3C53] p-8 rounded-2xl shadow-2xl border border-[#D2C1B6]/20">
+                  {/* Floating avatar */}
+                  <div className="absolute -top-6 left-1/2 transform -translate-x-1/2">
+                    <div 
+                      className="w-12 h-12 bg-gradient-to-br from-[#1B3C53] to-[#456882] rounded-full flex items-center justify-center text-2xl shadow-xl"
+                      style={pulseStyle(0)}
+                    >
+                      {testimonial.image}
+                    </div>
+                  </div>
+                  
+                  <div className="pt-8 space-y-4">
+                    <p className="text-sm italic leading-relaxed font-medium text-[#1B3C53]">
+                      "{testimonial.quote}"
+                    </p>
+                    <div className="border-t border-[#456882]/20 pt-4">
+                      <div className="font-bold text-[#1B3C53]">{testimonial.name}</div>
+                      <div className="text-xs text-[#456882] font-medium">{testimonial.role}</div>
+                    </div>
+                  </div>
+                  
+                  {/* Subtle gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-[#D2C1B6]/5 rounded-2xl pointer-events-none" />
                 </div>
               </div>
             ))}
           </div>
-
-          {/* Testimonials Section */}
-          <div className={`mb-12 sm:mb-16 transition-all duration-1000 delay-300 ${showJoinForm ? 'opacity-30 blur-sm scale-95' : 'opacity-100 blur-none scale-100'} ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
-            <h3 className="text-2xl sm:text-3xl font-bold text-[#0ABAB5] text-center mb-8 sm:mb-12">What Our Community Says</h3>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-              {TESTIMONIALS.map((testimonial, index) => (
-                <div key={index} className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 sm:p-8 shadow-lg border border-[#0ABAB5]/10 hover:shadow-xl transition-all duration-300">
-                  <div className="flex items-center mb-4">
-                    <div className="text-3xl mr-4" role="img" aria-label="Avatar">{testimonial.avatar}</div>
-                    <div>
-                      <h4 className="font-semibold text-gray-800 text-sm sm:text-base">{testimonial.name}</h4>
-                      <p className="text-[#0ABAB5] text-xs sm:text-sm">{testimonial.role}</p>
-                    </div>
-                  </div>
-                  <p className="text-gray-700 italic text-sm sm:text-base leading-relaxed">"{testimonial.content}"</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* CTA Section */}
-          <div className={`text-center transition-all duration-1000 delay-400 ${showJoinForm ? 'opacity-30 blur-sm scale-95' : 'opacity-100 blur-none scale-100'} ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
-            <div className="bg-white/90 backdrop-blur-md rounded-2xl p-6 sm:p-8 mb-8 sm:mb-12 max-w-2xl mx-auto border border-[#0ABAB5]/20 shadow-lg">
-              <h3 className="text-xl sm:text-2xl font-semibold text-[#0ABAB5] mb-4">Ready to Transform Your Wellness Journey?</h3>
-              <p className="text-gray-700 mb-6 text-sm sm:text-base">Join thousands of professionals who are already part of our thriving wellness community.</p>
-              
-              {!showJoinForm && (
-                <button
-                  onClick={() => setShowJoinForm(true)}
-                  onKeyPress={(e) => handleKeyPress(e, () => setShowJoinForm(true))}
-                  className="bg-[#0ABAB5] hover:bg-[#08918d] text-white text-base sm:text-lg font-semibold px-8 sm:px-12 py-3 sm:py-4 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-xl shadow-[#0ABAB5]/20 focus:outline-none focus:ring-2 focus:ring-[#0ABAB5] focus:ring-offset-2"
-                  aria-label="Join our wellness community"
-                  tabIndex={0}
-                >
-                  Join the Community
-                </button>
-              )}
-            </div>
-          </div>
-          </div>
         </div>
 
-          {/* Join Form Modal */}
-          {showJoinForm && (
-  <div className="fixed inset-0 z-30 flex items-center justify-center p-4 bg-black/20 backdrop-blur-sm">
-    <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto animate-scale-in">
-      
-      {/* Soft floating decoration */}
-      <div className="absolute -top-6 -right-6 w-32 h-32 bg-gradient-to-br from-[#FFEDF3]/40 to-[#ADEED9]/30 rounded-full blur-2xl opacity-40 animate-gentle-float pointer-events-none"></div>
-      <div className="absolute bottom-0 left-0 w-20 h-20 bg-gradient-to-br from-[#0ABAB5]/20 to-[#56DFCF]/10 rounded-full blur-xl opacity-30 animate-gentle-float pointer-events-none"></div>
-
-      {/* Glowing gradient wrapper */}
-      <div className="relative p-[2px] rounded-2xl bg-gradient-to-tr from-[#ADEED9] via-white to-[#FFEDF3] shadow-2xl">
-        <div className="bg-white/95 backdrop-blur-md rounded-2xl p-6 sm:p-8">
-          
-          {/* Heading */}
-          <div className="text-center mb-6 sm:mb-8">
-            <h2 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-[#0ABAB5] to-[#56DFCF] text-transparent bg-clip-text flex items-center justify-center gap-2">
-              📝 Join the Wellness Circle
-            </h2>
-            <p className="text-gray-700 text-sm sm:text-base mt-2">
-              Tell us a bit about yourself to get started
-            </p>
-            <div className="flex justify-center mt-4">
-              <svg width="80" height="8" viewBox="0 0 80 8" className="text-[#0ABAB5]/30" aria-hidden="true">
-                <path d="M0,4 Q20,0 40,4 T80,4" stroke="currentColor" strokeWidth="1.5" fill="none" />
-              </svg>
+        {/* Enhanced Form Block */}
+        <div
+          ref={formRef}
+          className={`transition-all duration-1000 ease-out transform ${
+            isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-12"
+          }`}
+        >
+          <div className="relative max-w-2xl mx-auto">
+            {/* Glowing background orbs behind form */}
+            <div className="absolute inset-0 -z-10">
+              <div className="absolute w-32 h-32 gradient-bg rounded-full blur-3xl opacity-20 -top-8 -left-8 pulse-orb" />
+              <div className="absolute w-24 h-24 gradient-bg rounded-full blur-2xl opacity-30 -bottom-6 -right-6 pulse-orb" style={{ animationDelay: '2s' }} />
+              <div className="absolute w-20 h-20 gradient-bg rounded-full blur-2xl opacity-25 top-1/2 -left-10 pulse-orb" style={{ animationDelay: '4s' }} />
             </div>
-          </div>
 
-          {/* Form Fields with Fieldsets */}
-          <form className="space-y-6">
-            <fieldset>
-              <legend className="text-[#0ABAB5] text-sm font-semibold uppercase mb-2">Basic Info</legend>
-              <div className="space-y-4">
-                {JOIN_FORM_FIELDS.slice(0, 3).map(({ field, label, placeholder, type, required }) => (
-                  <div key={field} className="group">
-                    <label htmlFor={field} className="block text-sm font-semibold text-gray-700 mb-1">
-                      {label} {required && <span className="text-red-500">*</span>}
-                    </label>
-                    <input
-                      type={type}
-                      id={field}
-                      name={field}
-                      value={formData[field]}
-                      onChange={handleChange}
-                      placeholder={placeholder}
-                      className="w-full border border-[#0ABAB5]/20 rounded-xl px-4 py-3 focus:outline-none focus:border-[#0ABAB5] focus:ring-2 focus:ring-[#0ABAB5]/10 transition-all duration-300 bg-white/90 backdrop-blur-sm text-sm sm:text-base shadow-inner"
-                      aria-invalid={formErrors[field] ? 'true' : 'false'}
-                      aria-describedby={formErrors[field] ? `${field}-error` : undefined}
-                    />
-                    {formErrors[field] && (
-                      <p id={`${field}-error`} className="text-red-500 text-xs mt-1" role="alert">
-                        {formErrors[field]}
-                      </p>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </fieldset>
-
-            <fieldset>
-              <legend className="text-[#0ABAB5] text-sm font-semibold uppercase mb-2">Wellness Profile</legend>
-              <div className="space-y-4">
-                {/* Experience dropdown */}
-                <div className="group">
-                  <label htmlFor="experience" className="block text-sm font-semibold text-gray-700 mb-1">
-                    Experience Level <span className="text-red-500">*</span>
+            {/* Glass Morphism Form */}
+            <div className="relative glass-morphism p-8 rounded-2xl shadow-2xl text-white space-y-6 backdrop-blur-xl border border-[#D2C1B6]/20 overflow-visible">
+              {/* Form glow effect that extends beyond the form */}
+              <div className="absolute -inset-4 bg-gradient-to-br from-[#456882]/10 via-[#D2C1B6]/5 to-[#F9F3EF]/10 rounded-3xl pointer-events-none blur-xl" />
+              <div className="absolute inset-0 bg-gradient-to-br from-[#D2C1B6]/5 via-transparent to-[#456882]/5 rounded-2xl pointer-events-none" />
+              
+              <div className="grid gap-6 md:grid-cols-2 relative z-10">
+                <div className="flex flex-col">
+                  <label className="mb-2 font-medium text-[#F9F3EF]">
+                    First Name
                   </label>
-                  <select
-                    id="experience"
-                    name="experience"
-                    value={formData.experience}
-                    onChange={handleChange}
-                    className="w-full border border-[#0ABAB5]/20 rounded-xl px-4 py-3 focus:outline-none focus:border-[#0ABAB5] focus:ring-2 focus:ring-[#0ABAB5]/10 transition-all duration-300 bg-white/90 backdrop-blur-sm text-sm sm:text-base"
-                    aria-invalid={formErrors.experience ? 'true' : 'false'}
-                    aria-describedby={formErrors.experience ? `experience-error` : undefined}
-                  >
-                    {EXPERIENCE_OPTIONS.map(option => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                  {formErrors.experience && (
-                    <p id="experience-error" className="text-red-500 text-xs mt-1" role="alert">
-                      {formErrors.experience}
-                    </p>
-                  )}
-                </div>
-
-                {/* Interests textarea */}
-                <div className="group">
-                  <label htmlFor="interests" className="block text-sm font-semibold text-gray-700 mb-1">
-                    Wellness Interests
-                  </label>
-                  <textarea
-                    id="interests"
-                    name="interests"
-                    rows={3}
-                    value={formData.interests}
-                    onChange={handleChange}
-                    placeholder="What aspects of wellness interest you most?"
-                    className="w-full border border-[#0ABAB5]/20 rounded-xl px-4 py-3 focus:outline-none focus:border-[#0ABAB5] focus:ring-2 focus:ring-[#0ABAB5]/10 transition-all duration-300 bg-white/90 backdrop-blur-sm text-sm sm:text-base resize-none shadow-inner"
+                  <input
+                    type="text"
+                    placeholder="Your name"
+                    className="p-3 rounded-lg border border-[#D2C1B6]/30 bg-[#F9F3EF]/10 backdrop-blur-sm text-[#F9F3EF] placeholder-[#D2C1B6] focus:outline-none focus:ring-2 focus:ring-[#D2C1B6] focus:border-transparent transition-all"
                   />
                 </div>
+                <div className="flex flex-col">
+                  <label className="mb-2 font-medium text-[#F9F3EF]">
+                    Email Address
+                  </label>
+                  <input
+                    type="email"
+                    placeholder="you@example.com"
+                    className="p-3 rounded-lg border border-[#D2C1B6]/30 bg-[#F9F3EF]/10 backdrop-blur-sm text-[#F9F3EF] placeholder-[#D2C1B6] focus:outline-none focus:ring-2 focus:ring-[#D2C1B6] focus:border-transparent transition-all"
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <label className="mb-2 font-medium text-[#F9F3EF]">
+                    Wellness Goal
+                  </label>
+                  <select
+                    className="curved-dropdown border border-[#D2C1B6]/30 bg-[#F9F3EF]/10 backdrop-blur-sm text-[#F9F3EF] focus:outline-none focus:border-transparent"
+                  >
+                    <option value="" className="bg-[#1B3C53] text-[#F9F3EF]">Select a goal</option>
+                    <option value="weight-loss" className="bg-[#1B3C53] text-[#F9F3EF]">Weight Loss</option>
+                    <option value="muscle-gain" className="bg-[#1B3C53] text-[#F9F3EF]">Muscle Gain</option>
+                    <option value="energy" className="bg-[#1B3C53] text-[#F9F3EF]">Boost Energy</option>
+                    <option value="overall-health" className="bg-[#1B3C53] text-[#F9F3EF]">Overall Health</option>
+                  </select>
+                </div>
+                <div className="flex flex-col">
+                  <label className="mb-2 font-medium text-[#F9F3EF]">
+                    Fitness Level
+                  </label>
+                  <select
+                    className="curved-dropdown border border-[#D2C1B6]/30 bg-[#F9F3EF]/10 backdrop-blur-sm text-[#F9F3EF] focus:outline-none focus:border-transparent"
+                  >
+                    <option value="" className="bg-[#1B3C53] text-[#F9F3EF]">Select level</option>
+                    <option value="beginner" className="bg-[#1B3C53] text-[#F9F3EF]">Beginner</option>
+                    <option value="intermediate" className="bg-[#1B3C53] text-[#F9F3EF]">Intermediate</option>
+                    <option value="advanced" className="bg-[#1B3C53] text-[#F9F3EF]">Advanced</option>
+                  </select>
+                </div>
               </div>
-            </fieldset>
 
-            {/* Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 pt-2">
-              <button
-                type="button"
-                onClick={handleCloseForm}
-                onKeyPress={(e) => handleKeyPress(e, handleCloseForm)}
-                className="w-full sm:flex-1 text-gray-600 hover:text-[#0ABAB5] py-3 px-6 rounded-xl border border-[#0ABAB5]/20 hover:border-[#0ABAB5] transition-all duration-300 bg-white/90 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-[#0ABAB5] focus:ring-offset-2 text-sm sm:text-base"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleSubmit}
-                className="w-full sm:flex-1 bg-[#0ABAB5] hover:bg-[#08918d] text-white py-3 px-6 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-[#0ABAB5] focus:ring-offset-2 text-sm sm:text-base"
-              >
-                Join Community
-              </button>
+              {/* Enhanced Button with Glow Effect */}
+              <div className="relative mt-8">
+                {/* Button glow that extends beyond form */}
+                <div 
+                  className="absolute -inset-8 bg-gradient-to-r from-[#456882]/20 via-[#D2C1B6]/30 to-[#456882]/20 rounded-full blur-2xl button-glow pointer-events-none" 
+                  style={buttonGlowStyle}
+                />
+                
+                <button
+                  className="relative w-full py-4 text-[#1B3C53] font-bold bg-gradient-to-r from-[#D2C1B6] via-[#F9F3EF] to-[#D2C1B6] rounded-full hover:scale-[1.02] hover:shadow-2xl transition-all duration-300 shadow-xl overflow-hidden group cursor-pointer border-2 border-[#456882]/20"
+                  onClick={() => alert('Form submitted! (Demo only)')}
+                >
+                  <span className="relative z-10">Join Now – It's Free!</span>
+                  
+                  {/* Hover overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#456882] to-[#1B3C53] opacity-0 group-hover:opacity-90 transition-opacity duration-300" />
+                  <span className="absolute inset-0 z-10 flex items-center justify-center text-[#F9F3EF] font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    Join Now – It's Free!
+                  </span>
+                  
+                  {/* Sparkle effects */}
+                  <div className="absolute top-2 right-4 w-2 h-2 bg-[#F9F3EF] rounded-full twinkle opacity-60"></div>
+                  <div className="absolute bottom-3 left-8 w-1 h-1 bg-[#456882] rounded-full twinkle opacity-80" style={{ animationDelay: '1s' }}></div>
+                  <div className="absolute top-3 left-1/3 w-1.5 h-1.5 bg-[#D2C1B6] rounded-full twinkle opacity-70" style={{ animationDelay: '2s' }}></div>
+                </button>
+              </div>
             </div>
-          </form>
+          </div>
         </div>
-      </div>
-    </div>
-  </div>
-)}
-
-      {/* Custom Animations */}
-      <style jsx>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-        
-        @keyframes gentle-pulse {
-          0%, 100% { opacity: 0.8; transform: scale(1); }
-          50% { opacity: 1; transform: scale(1.05); }
-        }
-        
-        @keyframes gentle-float {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-12px) rotate(180deg); }
-        }
-        
-        @keyframes scale-in {
-          0% { transform: scale(0.9) translateY(20px); opacity: 0; }
-          100% { transform: scale(1) translateY(0px); opacity: 1; }
-        }
-        
-        .animate-gentle-pulse {
-          animation: gentle-pulse 4s ease-in-out infinite;
-        }
-        
-        .animate-gentle-float {
-          animation: gentle-float 6s ease-in-out infinite;
-        }
-        
-        .animate-scale-in {
-          animation: scale-in 0.6s ease-out forwards;
-        }
-        
-        /* Respect reduced motion preference */
-        @media (prefers-reduced-motion: reduce) {
-          .animate-gentle-pulse,
-          .animate-gentle-float,
-          .animate-scale-in {
-            animation: none;
-          }
-        }
-        
-        /* Scrolling optimization for mobile */
-        @media (max-height: 600px) {
-          .max-h-[90vh] {
-            max-height: 100vh;
-          }
-        }
-      `}</style>
-    </div>
+      </section>
+    </>
   );
 }
